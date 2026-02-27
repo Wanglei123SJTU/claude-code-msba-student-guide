@@ -1,0 +1,678 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Claude Code Practical Guide</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<style>
+  :root{--text:#24292f;--bg:#ffffff;--muted:#57606a;--border:#d0d7de;--codebg:#f6f8fa;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;line-height:1.6;}
+  .page{max-width:980px;margin:0 auto;padding:32px 24px 64px;}
+  img{max-width:100%;height:auto;}
+  table{border-collapse:collapse;display:block;overflow:auto;max-width:100%;}
+  th,td{border:1px solid var(--border);padding:6px 10px;vertical-align:top;}
+  th{background:#f6f8fa;}
+  pre{background:var(--codebg);padding:12px;overflow:auto;border-radius:6px;border:1px solid var(--border);}
+  code{background:var(--codebg);padding:0.15em 0.35em;border-radius:4px;}
+  pre code{background:transparent;padding:0;}
+  hr{border:none;border-top:1px solid var(--border);margin:24px 0;}
+  a{color:#0969da;text-decoration:none;} a:hover{text-decoration:underline;}
+  .meta{margin-top:28px;color:var(--muted);font-size:13px;border-top:1px solid var(--border);padding-top:12px;}
+</style>
+</head>
+<body><div class="page">
+<header id="title-block-header">
+<h1 class="title">Claude Code Practical Guide</h1>
+</header>
+<h1 id="claude-code-practical-guide">Claude Code Practical Guide</h1>
+<p><img src="images/hero-claude-code.png" alt="Claude Code Hero" /></p>
+<p>This is a desktop-first practical guide to Claude Code: it explains
+core concepts, then walks through installation and safe day-to-day use
+in the Desktop app. If you need terminal/editor/web routes, the appendix
+includes concise setup paths for CLI, IDE, and web workflows.</p>
+<h2 id="1-what-is-claude-code">1. What is Claude Code?</h2>
+<p>Claude Code is an agentic coding environment from Anthropic for
+end-to-end software tasks: understanding a codebase, proposing and
+applying edits, running commands, and iterating with human approval (<a
+href="https://code.claude.com/docs/en/overview">official
+overview</a>).</p>
+<p>A useful way to think about it:</p>
+<ul>
+<li>Traditional AI coding assistants mostly complete or suggest
+code.</li>
+<li>Claude Code behaves more like a working agent loop: plan -&gt; act
+with tools -&gt; validate -&gt; revise.</li>
+</ul>
+<p>Compared with pure chat coding:</p>
+<ul>
+<li>It operates in real project context (files, folders, repo
+state).</li>
+<li>It supports permission gates and explicit review before
+changes.</li>
+<li>It is available across Desktop, Terminal CLI, IDE integrations, and
+web-oriented workflows.</li>
+</ul>
+<p>Why this matters in analytics and product work:</p>
+<ul>
+<li>Faster implementation of data and automation tasks.</li>
+<li>More consistent debugging and project handoff notes.</li>
+<li>Better support for iterative, reviewable engineering workflows.</li>
+</ul>
+<hr />
+<h2 id="2-what-is-an-ai-agent">2. What is an AI Agent?</h2>
+<p>An AI coding agent is not just autocomplete. It typically loops
+through:</p>
+<ol type="1">
+<li>Understand the goal.</li>
+<li>Build a plan.</li>
+<li>Use tools (read files, run commands, edit code).</li>
+<li>Check outputs and errors.</li>
+<li>Iterate until completion (with human control).</li>
+</ol>
+<p>Claude Code explicitly supports this mode with planning, permission
+control, and iterative execution patterns (<a
+href="https://code.claude.com/docs/en/desktop">desktop docs</a>, <a
+href="https://code.claude.com/docs/en/overview">overview</a>).</p>
+<p>Workflow vs Agent comparison diagram:</p>
+<p><img src="images/llm-workflow-vs-agent.png"
+alt="LLM Workflow vs LLM Agent" /></p>
+<p>Interpretation:</p>
+<ul>
+<li>Left side (LLM Workflow) is mostly linear: prompt -&gt; fixed task
+chain -&gt; output.</li>
+<li>Right side (LLM Agent) adds environment feedback and tool use, with
+a completion check (Done?) before final output.</li>
+<li>Claude Code aligns more with the right-side pattern: iterative,
+tool-using, and context-aware.</li>
+</ul>
+<hr />
+<h2
+id="3-claude-code-product-forms-desktop-vs-cli-vs-ide-extension-vs-sdkheadless">3.
+Claude Code product forms: Desktop vs CLI vs IDE extension vs
+SDK/Headless</h2>
+<p>Claude Code runs across multiple surfaces that share a common core
+engine (<a
+href="https://code.claude.com/docs/en/overview">overview</a>).</p>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Best use case</th>
+<th>What it does well</th>
+<th>Key limits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Desktop (Code tab)</td>
+<td>Visual, interactive coding sessions</td>
+<td>Diff review UI, approvals, file attachments, low terminal friction
+(<a href="https://code.claude.com/docs/en/desktop-quickstart">desktop
+quickstart</a>)</td>
+<td>No Linux desktop app; less suited for heavy automation (<a
+href="https://code.claude.com/docs/en/desktop">desktop docs</a>)</td>
+</tr>
+<tr>
+<td>CLI</td>
+<td>Automation, scripting, CI</td>
+<td>Pipe/print workflows, shell composability (<a
+href="https://code.claude.com/docs/en/overview">overview</a>)</td>
+<td>Requires terminal comfort</td>
+</tr>
+<tr>
+<td>IDE extension (VS Code/JetBrains)</td>
+<td>In-editor workflow continuity</td>
+<td>Works directly in editor context (<a
+href="https://code.claude.com/docs/en/overview">overview</a>)</td>
+<td>Depends on extension/IDE setup</td>
+</tr>
+<tr>
+<td>Agent SDK (Headless)</td>
+<td>Build custom agent systems</td>
+<td>Programmatic agent workflows in Python/TypeScript (<a
+href="https://docs.anthropic.com/en/docs/claude-code/sdk">SDK</a>)</td>
+<td>Requires API-key engineering setup</td>
+</tr>
+</tbody>
+</table>
+<p>Desktop vs CLI highlights:</p>
+<ul>
+<li>Same core engine; shared config can include <code>CLAUDE.md</code>,
+MCP settings, hooks, and skills.</li>
+<li>Desktop is best for visual review and guided interaction.</li>
+<li>CLI is better for scripted, non-interactive, and pipeline-heavy
+flows.</li>
+</ul>
+<hr />
+<h2 id="4-what-is-cli">4. What is CLI</h2>
+<p><code>CLI</code> (Command Line Interface) means controlling tools
+through typed commands in a terminal.</p>
+<p>Why it matters:</p>
+<ul>
+<li>Reproducibility: command history and scripts.</li>
+<li>Automation: repeatable tasks across datasets/repos.</li>
+<li>Deployment compatibility: cloud/SSH/CI systems are
+terminal-first.</li>
+<li>Auditability: easier to explain exactly what ran.</li>
+</ul>
+<p>In this guide, concrete CLI operations are intentionally moved to
+<code>Section 9. Appendix: Alternative setup paths (Terminal / IDE / Web)</code>
+so the main flow stays Desktop-first.</p>
+<hr />
+<h2 id="5-other-coding-agents-in-2026">5. Other Coding Agents in
+2026</h2>
+<p>Model availability can vary by plan, region, and release date.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Company</th>
+<th>Primary interface</th>
+<th>LLM (example models)</th>
+<th>Payment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a
+href="https://docs.github.com/en/copilot/get-started/what-is-github-copilot">GitHub
+Copilot</a> + <a
+href="https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/">Coding
+Agent</a></td>
+<td>GitHub (Microsoft)</td>
+<td>IDE + GitHub</td>
+<td>GPT-5 family, Claude family, Gemini family (<a
+href="https://docs.github.com/copilot/using-github-copilot/ai-models/supported-ai-models-in-copilot">supported
+models</a>)</td>
+<td>Free tier available; paid plans include Pro / Pro+ / Business /
+Enterprise (<a
+href="https://github.com/features/copilot/plans">plans</a>)</td>
+</tr>
+<tr>
+<td><a
+href="https://docs.cursor.com/get-started/introduction">Cursor</a></td>
+<td>Anysphere</td>
+<td>AI code editor</td>
+<td>GPT-5 family, Claude family, Gemini family (<a
+href="https://docs.cursor.com/models">models</a>)</td>
+<td>Hobby (free) plus Pro / Ultra / Teams / Enterprise (<a
+href="https://cursor.com/pricing">pricing</a>)</td>
+</tr>
+<tr>
+<td><a href="https://google-gemini.github.io/gemini-cli/docs/">Gemini
+CLI</a></td>
+<td>Google</td>
+<td>Terminal</td>
+<td>Gemini family (<a
+href="https://google-gemini.github.io/gemini-cli/docs/cli/model/">model
+docs</a>)</td>
+<td>Free usage path with personal-account limits (for example, up to 60
+requests/minute and 1,000 requests/day); paid usage via Gemini
+API/Vertex billing (<a
+href="https://google-gemini.github.io/gemini-cli/docs/">CLI docs</a>, <a
+href="https://ai.google.dev/gemini-api/docs/pricing">pricing</a>)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/openai/codex">OpenAI Codex CLI</a></td>
+<td>OpenAI</td>
+<td>Terminal (+ IDE/app/web options)</td>
+<td>GPT family (<a href="https://github.com/openai/codex">Codex
+repo</a>, <a href="https://developers.openai.com/api/docs/models">OpenAI
+models</a>)</td>
+<td>Works with ChatGPT plans (Plus/Pro/Team/Edu/Enterprise) or API-key
+billing (<a href="https://github.com/openai/codex">Codex repo</a>, <a
+href="https://help.openai.com/en/articles/11096431-using-codex-with-your-chatgpt-plan">plan
+note</a>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-preflight-checklist-accounts-os-git-terminal-basics">6.
+Preflight checklist (accounts, OS, Git, terminal basics)</h2>
+<h3 id="account-and-plan">Account and plan</h3>
+<ul>
+<li>You need to have a Claude account.</li>
+<li>For Desktop <code>Code</code> tab, you need an eligible paid plan
+(Pro/Max/Teams/Enterprise) (<a
+href="https://code.claude.com/docs/en/desktop-quickstart">desktop
+quickstart</a>).</li>
+</ul>
+<h3 id="os-and-support">OS and support</h3>
+<ul>
+<li>macOS: Desktop app supported.</li>
+<li>Windows: x64 supported; ARM64 support has evolved and should be
+confirmed in current desktop docs.</li>
+<li>Linux: Desktop app not currently supported.</li>
+</ul>
+<h3 id="local-prerequisites">Local prerequisites</h3>
+<ul>
+<li>On Windows, Git is required for local Desktop coding sessions (<a
+href="https://code.claude.com/docs/en/desktop-quickstart">desktop
+quickstart</a>).</li>
+<li>Basic terminal literacy helps even for Desktop workflows.</li>
+</ul>
+<hr />
+<h2 id="7-desktop-app-setup-and-configuration-step-by-step">7. Desktop
+app setup and configuration (step-by-step)</h2>
+<h3 id="step-1-download-the-desktop-app">Step 1: Download the desktop
+app</h3>
+<p><code>Goal</code>: Install Claude Desktop for your operating system.
+<code>Action</code>: Open <code>https://claude.ai/download</code>,
+choose the correct installer, and complete installation.
+<code>What success looks like</code>: Claude launches from Applications
+(macOS) or Start menu (Windows).</p>
+<p><img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/12.png"
+alt="Desktop app download flow (Bannerbear)" /></p>
+<h3 id="step-2-sign-in-and-enter-code-mode">Step 2: Sign in and enter
+Code mode</h3>
+<p><code>Goal</code>: Activate coding workflow in Desktop.
+<code>Action</code>: Sign in, then switch to the <code>Code</code> tab.
+<code>What success looks like</code>: You can start a local coding
+session.</p>
+<p><img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/13.png"
+alt="Desktop code tab and initial setup (Bannerbear)" /></p>
+<h3 id="step-3-connect-local-project-and-set-safe-defaults">Step 3:
+Connect local project and set safe defaults</h3>
+<p><code>Goal</code>: Configure a safe first session.
+<code>Action</code>:</p>
+<ol type="1">
+<li>Choose a local project folder.</li>
+<li>Keep permission mode on <code>Ask permissions</code>.</li>
+<li>Select model and start with a read-only analysis prompt.</li>
+</ol>
+<p><code>What success looks like</code>: Claude can inspect project
+structure and propose changes without auto-editing.</p>
+<p><img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/14.png"
+alt="Desktop project configuration and review flow (Bannerbear)" /></p>
+<p>Suggested first prompt:</p>
+<pre class="text"><code>Read this repository and summarize:
+1) objective,
+2) key data/code entry points,
+3) top implementation risks,
+4) one high-impact improvement.</code></pre>
+<h3 id="step-4-review-diffs-and-approve-intentionally">Step 4: Review
+diffs and approve intentionally</h3>
+<p><code>Goal</code>: Maintain human control and code quality.
+<code>Action</code>: Review each proposed diff before accepting.
+<code>What success looks like</code>: You can explain every accepted
+change and why it was approved.</p>
+<font color="red">
+Be careful! Always review every agent action before approval, and be extremely careful with destructive actions (especially deleting files) and paid actions (for example, API calls that can incur charges).
+</font>
+
+<hr />
+<h2 id="8-quick-reference-desktop-glossary-links">8. Quick reference
+(desktop, glossary, links)</h2>
+<h3 id="a-desktop-quick-checks">A. Desktop quick checks</h3>
+<ul>
+<li>App launches and sign-in succeeds.</li>
+<li><code>Code</code> tab is available.</li>
+<li>Local project folder is selected correctly.</li>
+<li>Permission mode is <code>Ask permissions</code> for early
+sessions.</li>
+<li>You review diffs before accepting edits.</li>
+</ul>
+<h3 id="b-mini-glossary">B. Mini glossary</h3>
+<ul>
+<li><code>Agent</code>: Tool-using AI workflow that can plan, act, and
+iterate.</li>
+<li><code>CLI</code>: Command line interface for scriptable/reproducible
+workflows.</li>
+<li><code>MCP</code>: Open protocol for connecting tools/context.</li>
+<li><code>Permission mode</code>: Agent autonomy policy.</li>
+<li><code>Worktree</code>: Git mechanism for parallel
+branches/workspaces.</li>
+<li><code>Headless</code>: Programmatic, non-UI execution.</li>
+</ul>
+<h3 id="c-quick-links">C. Quick links</h3>
+<ul>
+<li>Claude Code overview: <a
+href="https://code.claude.com/docs/en/overview">https://code.claude.com/docs/en/overview</a></li>
+<li>Desktop quickstart: <a
+href="https://code.claude.com/docs/en/desktop-quickstart">https://code.claude.com/docs/en/desktop-quickstart</a></li>
+<li>Desktop docs: <a
+href="https://code.claude.com/docs/en/desktop">https://code.claude.com/docs/en/desktop</a></li>
+<li>Agent SDK: <a
+href="https://docs.anthropic.com/en/docs/claude-code/sdk">https://docs.anthropic.com/en/docs/claude-code/sdk</a></li>
+</ul>
+<hr />
+<h2 id="9-appendix-alternative-setup-paths-terminal--ide--web">9.
+Appendix: Alternative setup paths (Terminal / IDE / Web)</h2>
+<p>This appendix contains the other three setup paths.</p>
+<h3 id="a-terminal-cli-path">A. Terminal CLI path</h3>
+<p><code>Goal</code>: Install and run Claude Code in terminal.</p>
+<p><code>Command</code> (Windows PowerShell):</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">irm</span> https<span class="op">://</span>claude<span class="op">.</span><span class="fu">ai</span><span class="op">/</span>install<span class="op">.</span><span class="fu">ps1</span> <span class="op">|</span> <span class="fu">iex</span></span></code></pre></div>
+<p><code>Command</code> (macOS/Linux):</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://claude.ai/install.sh <span class="kw">|</span> <span class="fu">bash</span></span></code></pre></div>
+<p><code>Command</code> (Windows WinGet optional):</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>winget install Anthropic<span class="op">.</span><span class="fu">ClaudeCode</span></span></code></pre></div>
+<p><code>Command</code> (verify):</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> <span class="at">--version</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">claude</span> <span class="at">--help</span></span></code></pre></div>
+<p><code>What success looks like</code>: <code>claude</code> starts and
+accepts prompts in your project directory.</p>
+<p><img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/0.png"
+alt="Terminal setup step 1 (Bannerbear)" /> <img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/1.png"
+alt="Terminal setup step 2 (Bannerbear)" /> <img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/2.png"
+alt="Terminal setup step 3 (Bannerbear)" /></p>
+<h3 id="b-ide-path-vs-code">B. IDE path (VS Code)</h3>
+<p><code>Goal</code>: Use Claude Code within editor workflow.</p>
+<p>Steps:</p>
+<ol type="1">
+<li>Ensure CLI is installed first.</li>
+<li>Install/open the Claude-related extension/workflow in VS Code.</li>
+<li>Sign in and run Claude from editor context.</li>
+</ol>
+<p><code>What success looks like</code>: You can invoke Claude from VS
+Code and operate on the current workspace.</p>
+<p><img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/3.png"
+alt="VS Code setup step 1 (Bannerbear)" /> <img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/4.png"
+alt="VS Code setup step 2 (Bannerbear)" /> <img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/5.png"
+alt="VS Code setup step 3 (Bannerbear)" /></p>
+<h3 id="c-web-path">C. Web path</h3>
+<p><code>Goal</code>: Use Claude coding workflows through web interface
+flow.</p>
+<p>Steps:</p>
+<ol type="1">
+<li>Sign in on web interface.</li>
+<li>Open the coding workspace flow.</li>
+<li>Configure project/context and run your first task.</li>
+</ol>
+<p><code>What success looks like</code>: You can issue coding prompts in
+web context and review outputs.</p>
+<p><img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/6.png"
+alt="Web setup step 1 (Bannerbear)" /> <img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/7.png"
+alt="Web setup step 2 (Bannerbear)" /> <img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/8.png"
+alt="Web setup step 3 (Bannerbear)" /> <img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/9.png"
+alt="Web setup step 4 (Bannerbear)" /> <img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/10.png"
+alt="Web setup step 5 (Bannerbear)" /> <img
+src="https://www.bannerbear.com/images/ghost/2026-01-21-how-to-install-claude-code-terminal-ide-web-desktop-setup/11.png"
+alt="Web setup step 6 (Bannerbear)" /></p>
+<hr />
+<h2 id="10-references">10. References</h2>
+<ul>
+<li>Bannerbear tutorial (source referenced for installation flow +
+screenshots): <a
+href="https://www.bannerbear.com/blog/how-to-install-claude-code-terminal-ide-web-desktop-setup/">https://www.bannerbear.com/blog/how-to-install-claude-code-terminal-ide-web-desktop-setup/</a></li>
+<li>Claude Code overview: <a
+href="https://code.claude.com/docs/en/overview">https://code.claude.com/docs/en/overview</a></li>
+<li>Claude Desktop quickstart: <a
+href="https://code.claude.com/docs/en/desktop-quickstart">https://code.claude.com/docs/en/desktop-quickstart</a></li>
+<li>Claude Desktop docs: <a
+href="https://code.claude.com/docs/en/desktop">https://code.claude.com/docs/en/desktop</a></li>
+<li>Claude Code SDK: <a
+href="https://docs.anthropic.com/en/docs/claude-code/sdk">https://docs.anthropic.com/en/docs/claude-code/sdk</a></li>
+<li>GitHub Copilot plans: <a
+href="https://github.com/features/copilot/plans">https://github.com/features/copilot/plans</a></li>
+<li>GitHub Copilot supported models: <a
+href="https://docs.github.com/copilot/using-github-copilot/ai-models/supported-ai-models-in-copilot">https://docs.github.com/copilot/using-github-copilot/ai-models/supported-ai-models-in-copilot</a></li>
+<li>Cursor models: <a
+href="https://docs.cursor.com/models">https://docs.cursor.com/models</a></li>
+<li>Cursor pricing: <a
+href="https://cursor.com/pricing">https://cursor.com/pricing</a></li>
+<li>Gemini CLI docs: <a
+href="https://google-gemini.github.io/gemini-cli/docs/">https://google-gemini.github.io/gemini-cli/docs/</a></li>
+<li>Gemini CLI model docs: <a
+href="https://google-gemini.github.io/gemini-cli/docs/cli/model/">https://google-gemini.github.io/gemini-cli/docs/cli/model/</a></li>
+<li>Gemini API pricing: <a
+href="https://ai.google.dev/gemini-api/docs/pricing">https://ai.google.dev/gemini-api/docs/pricing</a></li>
+<li>OpenAI Codex repo: <a
+href="https://github.com/openai/codex">https://github.com/openai/codex</a></li>
+<li>OpenAI models: <a
+href="https://developers.openai.com/api/docs/models">https://developers.openai.com/api/docs/models</a></li>
+<li>OpenAI Codex + ChatGPT plan note: <a
+href="https://help.openai.com/en/articles/11096431-using-codex-with-your-chatgpt-plan">https://help.openai.com/en/articles/11096431-using-codex-with-your-chatgpt-plan</a></li>
+</ul>
+<div class="meta">Published from markdown via GitHub Pages.</div></div></body>
+</html>
+
