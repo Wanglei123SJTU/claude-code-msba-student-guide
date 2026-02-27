@@ -365,7 +365,10 @@ Then summarize all fixes.
 Open the generated site in a browser.
 
 `Action`:
-1. In Claude Desktop, ask Claude Code: "Start a local preview server for the `personal-site/website` folder and tell me the URL."
+1. In Claude Desktop, give the following prompt:
+   ```text
+   Start a local preview server for the `personal-site/website` folder and tell me the URL.
+   ```
 2. Review and approve the action.
 3. Open the returned local URL in your browser.
 
@@ -387,6 +390,9 @@ Publish the generated website online.
 
 `What success looks like`:
 Claude returns a working GitHub Pages URL, and the online page matches your local preview.
+
+Example output (for reference):
+- TA's demo: https://wanglei123sjtu.github.io/claude-code-msba-student-guide/ 
 
 ---
 
@@ -415,36 +421,20 @@ Be careful! Always review every agent action before approval, and be extremely c
 - Track failure patterns (hallucinated facts, wrong assumptions, weak validation) and update your prompting style.
 - Build your own "working prompt patterns" over time so later tasks are faster and more reliable.
 
+**AI lowers the cost of execution. It doesn't lower the cost of thinking.**
+
 ---
+
 
 ## 10. References
 
-- Claude Code overview: https://code.claude.com/docs/en/overview
-- Claude Desktop quickstart: https://code.claude.com/docs/en/desktop-quickstart
-- Claude Desktop docs: https://code.claude.com/docs/en/desktop
-- Claude Code SDK: https://docs.anthropic.com/en/docs/claude-code/sdk
-- GitHub Copilot plans: https://github.com/features/copilot/plans
-- GitHub Copilot supported models: https://docs.github.com/copilot/using-github-copilot/ai-models/supported-ai-models-in-copilot
-- Cursor models: https://docs.cursor.com/models
-- Cursor pricing: https://cursor.com/pricing
-- Gemini CLI docs: https://google-gemini.github.io/gemini-cli/docs/
-- Gemini CLI model docs: https://google-gemini.github.io/gemini-cli/docs/cli/model/
-- Gemini API pricing: https://ai.google.dev/gemini-api/docs/pricing
-- OpenAI Codex repo: https://github.com/openai/codex
-- OpenAI models: https://developers.openai.com/api/docs/models
-- OpenAI Codex + ChatGPT plan note: https://help.openai.com/en/articles/11096431-using-codex-with-your-chatgpt-plan
-- StartBootstrap Resume template: https://github.com/StartBootstrap/startbootstrap-resume
-- simplefolio template: https://github.com/cobiwave/simplefolio
-- developerFolio template: https://github.com/saadpasta/developerFolio
-- DevPortfolio template: https://github.com/RyanFitzgerald/devportfolio
-- academicpages template: https://github.com/academicpages/academicpages.github.io
-- al-folio template: https://github.com/alshedivat/al-folio
 - GitHub Pages: creating a site: https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site
-- GitHub Pages: publishing source configuration: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
-
 - Best practices for Claude Code: https://code.claude.com/docs/en/best-practices
 - Claude Code security: https://docs.anthropic.com/en/docs/claude-code/security
 - Anthropic prompt engineering overview: https://docs.anthropic.com/en/docs/prompt-engineering
+
+
+
 
 
 
