@@ -15,30 +15,26 @@ This document focuses on Claude Code setup and configuration: prerequisites, Des
 - Official pricing page: https://claude.com/pricing
 
 #### Free fallback option
-- If you do not want to pay for Claude Code right now, Gemini is a practical free-start alternative.
+- If you prefer not to pay for a Claude Code subscription, Gemini can serve as a practical free alternative, although it has a slightly steeper learning curve, as Gemini does **not** have a standalone Windows/macOS Desktop app installer like Claude Desktop.
 - Recommended free-start options:
   - **Gemini Code Assist (Individual)**: free tier for eligible individual accounts in VS Code / JetBrains.
   - **Gemini CLI**: free tier for personal Google accounts (with quota limits).
-- Note: 
-   - Gemini does **not** have a standalone Windows/macOS Desktop app installer like Claude Desktop.
-   - Google Cloud trial: eligible **new Google Cloud customers** can usually get up to **$300 trial credit** (about 90 days), which can be used for Google Cloud services such as **Gemini API usage**.
+- Google Cloud trial note: eligible **new Google Cloud customers** can usually get up to **$300 trial credit** (about 90 days), which can be used for Google Cloud services such as **Gemini API usage via GCP projects**.
 - Links:
   - Gemini Code Assist (individual setup): https://developers.google.com/gemini-code-assist/docs/set-up-gemini
   - Gemini CLI quotas and pricing: https://google-gemini.github.io/gemini-cli/docs/quota-and-pricing.html
   - Google Cloud Free Program ($300 trial): https://cloud.google.com/free/docs/gcp-free-tier
 
-
+This document will focus on the Claude Code desktop application, as it is the most accessible option for the majority of students.
 
 ### OS and support
 - macOS: Desktop app supported.
-- Windows: x64 supported; ARM64 support has evolved and should be confirmed in current desktop docs.
+- Windows: x64 supported.
 - Linux: Desktop app not currently supported.
 
 ### Local prerequisites
 - On Windows, Git is required for local Desktop coding sessions ([desktop quickstart](https://code.claude.com/docs/en/desktop-quickstart)).
-- Basic terminal literacy helps even for Desktop workflows.
 
-**With the preflight checklist complete, we now move to a step-by-step Claude Code Desktop setup, as Desktop is the most accessible option for most users.**
 
 
 ---
@@ -170,4 +166,8 @@ Steps:
 - Claude Code desktop docs: https://code.claude.com/docs/en/desktop
 - Claude Code overview: https://code.claude.com/docs/en/overview
 - Bannerbear tutorial: https://www.bannerbear.com/blog/how-to-install-claude-code-terminal-ide-web-desktop-setup/
+
+
+
+
 
